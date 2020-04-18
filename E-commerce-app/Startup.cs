@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using E_commerce_app.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using E_commerce_app.Data.Models;
 
 namespace E_commerce_app
 {
@@ -37,7 +38,7 @@ namespace E_commerce_app
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddDefaultIdentity<AppUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -48,6 +49,7 @@ namespace E_commerce_app
         {
             using (var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
+                //Database migration(update)
                 scope.ServiceProvider.GetRequiredService<ApplicationDbContext>().Database.Migrate();
             }
 
