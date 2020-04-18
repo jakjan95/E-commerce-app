@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using E_commerce_app.Data;
 using E_commerce_app.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace E_commerce_app.Controllers
 {
+    [Authorize(Policy = "RequireAdministratorRole")]
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
