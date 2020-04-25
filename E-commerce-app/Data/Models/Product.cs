@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace E_commerce_app.Data.Models
 {
@@ -10,6 +11,7 @@ namespace E_commerce_app.Data.Models
 
         public string Name { get; set; }
         public string Description { get; set; }
+
         public decimal Price { get; set; }
         public string Image { get; set; }
 

@@ -1,4 +1,4 @@
-﻿@model E_commerce_app.Data.Models.Product
+﻿@model E_commerce_app.Dtos.ProductCreateDto
 
 @{
     ViewData["Title"] = "Create";
@@ -15,7 +15,25 @@
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <label asp-for="Image" class="control-label"></label>
+                <input asp-for="Image" class="form-control" />
+
+                <label  asp-for="Categories" class="control-label"></label>
+                <select asp-for="Categories" id="Categories" name="Categories" multiple>
+                    @foreach (var item in Model.Categories)
+                    {
+                        <option value=@item.Id>@item.Name</option>
+                    }
+
+                </select>
                 <span asp-validation-for="Name" class="text-danger"></span>
+                <span asp-validation-for="Description" class="text-danger"></span>
+                <span asp-validation-for="Price" class="text-danger"></span>
+                <span asp-validation-for="Image" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />

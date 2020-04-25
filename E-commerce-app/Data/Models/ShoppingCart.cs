@@ -16,5 +16,9 @@ namespace E_commerce_app.Data.Models
 
         public string UserId { get; set;  }
         public AppUser User { get; set; }
+        public ShoppingCart()
+        {
+            ShoppingCartProducts = new List<ShoppingCartProduct>();
+        }
     }
 }
