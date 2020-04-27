@@ -23,7 +23,7 @@ namespace E_commerce_app.Controllers
 
         // GET: ShoppingCarts
         [Authorize]
-        public async Task<IActionResult> Index(int? id)
+        public async Task<IActionResult> Index(int? id, int? quantity)
         {
             var userId = _userManager.GetUserId(HttpContext.User);
             var shoppingCart = _context.ShoppingCarts
@@ -46,7 +46,7 @@ namespace E_commerce_app.Controllers
             {
                 shoppingCart.ShoppingCartProducts
                     .First(a => a.Product.Id == id)
-                    .Quantity += 1;
+                    .Quantity += quantity ?? 1;
                 _context.SaveChanges();
                 return View(shoppingCart.ShoppingCartProducts);
             }
@@ -54,7 +54,7 @@ namespace E_commerce_app.Controllers
             var product = _context.Products.FirstOrDefault(a => a.Id == id);
             if (product != null)
             {
-                shoppingCart.ShoppingCartProducts.Add(new ShoppingCartProduct { ProductId = product.Id, Quantity = 1 });
+                shoppingCart.ShoppingCartProducts.Add(new ShoppingCartProduct { ProductId = product.Id, Quantity = quantity ?? 1 });
                 _context.SaveChanges();
             }
 
@@ -173,7 +173,7 @@ namespace E_commerce_app.Controllers
                 return NotFound();
             }
 
-            if(shoppingCartProduct.Quantity <= 1)
+            if (shoppingCartProduct.Quantity <= 1)
             {
                 _context.Remove(shoppingCartProduct);
                 _context.SaveChanges();
@@ -183,7 +183,6 @@ namespace E_commerce_app.Controllers
                 shoppingCartProduct.Quantity--;
                 _context.SaveChanges();
             }
-
 
             return RedirectToAction("Index");
         }

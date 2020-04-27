@@ -42,12 +42,34 @@
     <a asp-action="Index">Back to List</a>
     <form asp-controller="ShoppingCarts" asp-action="Index">
         <input type="hidden" asp-for="Id" />        @*tutaj vlue ustawic :)*@
-        @*<div class="form-group">
-            <label asp-for="Quantity" class="control-label"></label>
-            <input asp-for="Quantity" class="form-control" />
-        </div>*@
+        <div class="form-group">
+            <label class="control-label"></label>
+            <input name="quantity" type="number" min="1" class="form-control" />
+        </div>
         <div class="form-group">
             <input type="submit" value="Add to cart" class="btn btn-default" />
         </div>
     </form>
 </div>
+<form asp-action="AddReview">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label class="control-label">Rating</label>
+        <input name="rating" type="number" min="1" max="5" class="form-control" />
+        <label class="control-label">Comment</label>
+        <input name="comment" type="text" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Add Review" class="btn btn-default" />
+    </div>
+</form>
+<table class="table table-striped table-dark">
+    @foreach (var item in Model.Reviews)
+    {
+        <tr>
+            <td>@item.User.FirstName</td>
+            <td>@item.Rating</td>
+            <td>@item.Comment</td>
+        </tr>
+    }
+</table>

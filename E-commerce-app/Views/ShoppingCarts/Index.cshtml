@@ -40,19 +40,25 @@
                 <td>
 
                     @*<a asp-action="Index" asp-route-id="@item.Id">Add</a>*@
-                    <form asp-controller="ShoppingCarts" asp-action="Index" asp-route-id="@item.Id">
-                        <input type="hidden" asp-for="@item.Id" />        @*tutaj vlue ustawic :)*@
-                        @*<div class="form-group">
-                                <label asp-for="Quantity" class="control-label"></label>
-                                <input asp-for="Quantity" class="form-control" />
-                            </div>*@
+                    <form asp-action="Index">
+                        <input type="hidden" name="id" asp-for="@item.ProductId" />
                         <div class="form-group">
-                            <input type="submit" value="Add" class="btn btn-default" />
+                            <label class="control-label"></label>
+                            <input name="quantity" type="number" min="1" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Add to cart" class="btn btn-default" />
                         </div>
                     </form>
                 </td>
-
             </tr>
         }
     </tbody>
 </table>
+@if (Model.Any())
+{
+    <form asp-controller="Transactions" asp-action="Create">
+        <input type="hidden" name="id" asp-for="@Model.First().ShoppingCartId" />
+        <input type="submit" value="Purchase" class="btn btn-default" />
+    </form>
+}

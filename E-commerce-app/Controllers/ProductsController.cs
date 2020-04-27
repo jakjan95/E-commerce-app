@@ -2,6 +2,7 @@
 using E_commerce_app.Data.Models;
 using E_commerce_app.Dtos;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,10 +18,12 @@ namespace E_commerce_app.Controllers
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<AppUser> _userManager;
 
-        public ProductsController(ApplicationDbContext context)
+        public ProductsController(ApplicationDbContext context, UserManager<AppUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Products
@@ -44,6 +47,8 @@ namespace E_commerce_app.Controllers
             }
 
             var product = await _context.Products
+                .Include(a => a.Reviews)
+                .ThenInclude(a => a.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
@@ -62,6 +67,30 @@ namespace E_commerce_app.Controllers
                 Categories = await _context.Categories.ToListAsync()
             };
             return View(result);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> AddReview(int id, int rating, string comment)
+        {
+            var product = _context.Products
+                .Include(a=>a.Reviews)
+                .ThenInclude(a=>a.User)
+                .FirstOrDefault(a => a.Id == id);
+            if (product == null)
+                return View("Index");
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            product.Reviews.Add(new Review
+            {
+                Comment = comment,
+                Date = DateTime.Now,
+                Rating = rating,
+                User = user
+            });
+            _context.SaveChanges();
+
+
+            return View("Details",product);
         }
 
         [Authorize(Policy = "RequireAdministratorRole")]
