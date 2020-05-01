@@ -38,8 +38,6 @@
                     <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-default">Delete</a>
                 </td>
                 <td>
-
-                    @*<a asp-action="Index" asp-route-id="@item.Id">Add</a>*@
                     <form asp-action="Index">
                         <input type="hidden" name="id" asp-for="@item.ProductId" />
                         <div class="form-group">
@@ -56,9 +54,16 @@
     </tbody>
 </table>
 @if (Model.Any())
-{
+    //todo: summing up
+    {<form onsubmit="return false" oninput="o.value = parseInt(1)">
+        TOTAL: <output name="o"></output> PLN
+    </form>
+
     <form asp-controller="Transactions" asp-action="Create">
         <input type="hidden" name="id" asp-for="@Model.First().ShoppingCartId" />
         <input type="submit" value="Purchase" class="btn btn-default" />
+
     </form>
-}
+
+
+    }
