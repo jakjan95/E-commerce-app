@@ -1,5 +1,6 @@
 ﻿using E_commerce_app.Data;
 using E_commerce_app.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,8 +9,10 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace E_commerce_app.Controllers
 {
+    [Authorize(Policy = "RequireAdministratorRole")]
     public class TransactionsController : Controller
     {
         private readonly ApplicationDbContext _context;
