@@ -46,10 +46,7 @@ namespace E_commerce_app.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products
-                .Include(a => a.Reviews)
-                .ThenInclude(a => a.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var product = GetProductToDetailsPage(id ?? 0);
             if (product == null)
             {
                 return NotFound();
@@ -69,6 +66,7 @@ namespace E_commerce_app.Controllers
             return View(result);
         }
 
+        //tak samo delet review :)
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddReview(int id, int rating, string comment)
@@ -261,6 +259,29 @@ namespace E_commerce_app.Controllers
         private bool ProductExists(int id)
         {
             return _context.Products.Any(e => e.Id == id);
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteComment(int? id, int? productId)
+        {
+            var review = await _context.Reviews
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (review == null)
+            {
+                return NotFound();
+            }
+            _context.Reviews.Remove(review);
+            _context.SaveChanges();
+
+            var product = GetProductToDetailsPage(productId??0);
+            return View("Details", product);
+        }
+
+        private Product GetProductToDetailsPage(int id)
+        {
+            return _context.Products
+                .Include(a => a.Reviews)
+                .ThenInclude(a => a.User)
+                .FirstOrDefault(m => m.Id == id);
         }
     }
 }

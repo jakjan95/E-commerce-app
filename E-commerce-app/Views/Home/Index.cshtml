@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<E_commerce_app.Data.Models.Product>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -91,4 +93,29 @@
             <li><a href="https://go.microsoft.com/fwlink/?LinkID=398609">Publish to Microsoft Azure Web Apps</a></li>
         </ul>
     </div>
+</div>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-sm-3">
+            <div class="card" style="width: 18rem;">
+                <a asp-controller="Products" asp-action="Details" asp-route-id="@item.Id">
+                    <img src="~/images/@item.Image" class="card-img-top tile-img">
+                </a>
+                <div class="card-body">
+                    <p class="card-text">
+                        <a asp-controller="Products" asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a><br />
+                        @Html.DisplayFor(modelItem => item.Description)<br />
+                        <b>@Html.DisplayFor(modelItem => item.Price) PLN</b> <br />
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        }
+                    </p>
+                </div>
+            </div>
+        </div>
+    }
 </div>

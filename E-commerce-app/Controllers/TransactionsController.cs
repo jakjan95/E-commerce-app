@@ -38,6 +38,8 @@ namespace E_commerce_app.Controllers
 
             var transaction = await _context.Transactions
                 .Include(t => t.User)
+                .Include(a=>a.TransactionProducts)
+                .ThenInclude(a=>a.Product)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (transaction == null)
             {
@@ -58,7 +60,8 @@ namespace E_commerce_app.Controllers
                 User = user,
                 TransactionProducts = shoppingCart.ShoppingCartProducts.Select(a => new TransactionProduct
                 {
-                    ProductId = a.ProductId
+                    ProductId = a.ProductId,
+                    Quantity = a.Quantity
                 }).ToList()
             };
             _context.Transactions.Add(transaction);

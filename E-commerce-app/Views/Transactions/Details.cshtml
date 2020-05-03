@@ -44,21 +44,21 @@
             table with item, item id, quantity
             each item quantity in order
             total price for order
-            *@
+        *@
         @*<h4>Order content</h4>
-        <table class="table table-striped table-dark">
-            @foreach (var item in Model.User.ShoppingCarts)
-            {
-                <tr>
-                    <td>@item.User.Transactions</td>
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <td><a asp-action="Delete" asp-route-id="@item.Id">Delete</a></td>
-                    }
+            <table class="table table-striped table-dark">
+                @foreach (var item in Model.User.ShoppingCarts)
+                {
+                    <tr>
+                        <td>@item.User.Transactions</td>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <td><a asp-action="Delete" asp-route-id="@item.Id">Delete</a></td>
+                        }
 
-                </tr>
-            }
-        </table>*@
+                    </tr>
+                }
+            </table>*@
 
 
     </dl>
@@ -67,3 +67,49 @@
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Product
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Quantity
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.TransactionProducts)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@if (Model.TransactionProducts.Any())
+{
+
+    <div class="row">
+        <div class="col-md-9">
+        </div>
+        <div class="col-md-3">
+            TOTAL: @Model.TransactionProducts.Sum(a => a.Quantity * a.Product.Price) PLN
+        </div>
+    </div>
+}
+

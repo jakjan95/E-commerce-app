@@ -54,16 +54,24 @@
     </tbody>
 </table>
 @if (Model.Any())
-    //todo: summing up
-    {<form onsubmit="return false" oninput="o.value = parseInt(1)">
-        TOTAL: <output name="o"></output> PLN
-    </form>
+{
 
-    <form asp-controller="Transactions" asp-action="Create">
-        <input type="hidden" name="id" asp-for="@Model.First().ShoppingCartId" />
-        <input type="submit" value="Purchase" class="btn btn-default" />
-
-    </form>
-
+<div class="row">
+    <div class="col-md-9">
+    </div>
+        <div class="col-md-3">
+            TOTAL: @Model.Sum(a => a.Quantity * a.Product.Price) PLN
+        </div>
+    </div>
+<div class="row">
+    <div class="col-md-9">
+    </div>
+    <div class="col-md-3">
+        <form asp-controller="Transactions" asp-action="Create">
+            <input type="hidden" name="id" asp-for="@Model.First().ShoppingCartId" />
+            <input type="submit" value="Purchase" class="btn btn-default" />
+        </form>
+    </div>
+</div>
 
     }

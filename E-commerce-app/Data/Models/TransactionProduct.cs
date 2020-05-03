@@ -10,6 +10,7 @@ namespace E_commerce_app.Data.Models
     {
         [Key]
         public int Id { get; set; }
+        public int Quantity { get; set; }
         public Transaction Transaction { get; set; }
         public int TransactionId { get; set; }
         public int ProductId { get; set; }
